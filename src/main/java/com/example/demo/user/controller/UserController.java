@@ -8,6 +8,7 @@ import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,14 +42,13 @@ public class UserController {
     @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByPrice.class)
     public List<Price> pricesNew() {
-        System.out.println(getUserDetails());
         return Stream.of(100, 200, 400, 500, 600, 700)
                 .map(price -> new Price(price, "Price" + price))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/users/profiles")
-    public Set<String> getUserDetails() {
-        return userService.getUserRoles("Girish");
+    public Set<String> getUserDetails(@RequestParam(value = "refresh", defaultValue = "false") boolean refresh) {
+        return userService.getUserRoles("Girish", refresh);
     }
 }
