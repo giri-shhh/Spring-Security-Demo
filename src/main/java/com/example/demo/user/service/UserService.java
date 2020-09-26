@@ -13,14 +13,17 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserService {
 
+    public static final String USERS = "users";
     private final CacheManager cacheManager;
     private final CacheUserService cacheUserService;
 
     public Set<String> getUserRoles(String userName, boolean refresh) {
-        if (refresh) {
-            Cache users = cacheManager.getCache("users");
-            if (null != users) users.evictIfPresent(userName);
-        }
+        if (refresh) evictCache(USERS, userName);
         return cacheUserService.getUserRoles(userName);
+    }
+
+    private void evictCache(String cacheName, String cacheKey) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (null != cache) cache.evict(cacheKey);
     }
 }

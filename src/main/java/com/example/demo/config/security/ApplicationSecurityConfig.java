@@ -47,7 +47,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        log.info("Accessed");
         UserDetails giri = User.builder()
                 .username("giri")
                 .password(passwordEncoder.encode("pass"))
