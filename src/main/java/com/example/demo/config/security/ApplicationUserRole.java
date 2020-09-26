@@ -1,8 +1,6 @@
 package com.example.demo.config.security;
 
-import com.example.demo.config.security.ApplicationUserAuthorities;
 import com.google.common.collect.Sets;
-import org.springframework.security.authentication.jaas.JaasGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

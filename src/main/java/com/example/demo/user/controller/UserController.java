@@ -1,16 +1,17 @@
 package com.example.demo.user.controller;
 
 import com.example.demo.config.filter.FilterResponse;
-import com.example.demo.user.service.FilterByName;
-import com.example.demo.user.service.FilterByPrice;
-import com.example.demo.user.service.Price;
-import com.example.demo.user.service.User;
+import com.example.demo.user.dto.Price;
+import com.example.demo.user.filter.FilterByName;
+import com.example.demo.user.filter.FilterByPrice;
+import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,36 +19,36 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class UserController {
 
-    @GetMapping("/")
-    public List<String> hello() {
-        return Stream.of("05Hi", "Hello", "Hi", "05hhhh", "HI", "HELLO")
-                .collect(Collectors.toList());
-    }
-
+    public static final String ADMIN_WRITE_OR_STUDENT_READ = "(hasRole('ADMIN') and hasAuthority('course:write')) or ( hasRole('STUDENT') and hasAuthority('course:read'))";
+    public static final String STUDENT_READ = "hasRole('STUDENT') and hasAuthority('student:read')";
+    private final UserService userService;
 
     @GetMapping("/app")
-    @PreAuthorize("(hasRole('ADMIN') and hasAuthority('course:write')) " +
-            "or ( hasRole('STUDENT') and hasAuthority('course:read'))")
+    @PreAuthorize(ADMIN_WRITE_OR_STUDENT_READ)
     public List<String> courses() {
         return Stream.of("Java", "Javascript", "Python", "Go", "Rust")
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/users")
+    @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByName.class)
-    @PreAuthorize("hasRole('STUDENT') and hasAuthority('student:read')")
-    public List<User> users() {
-        return Stream.of("Girish", "Harish", "Prakash", "Varun")
-                .map(User::new)
-                .collect(Collectors.toList());
+    public String users() {
+        return String.join("", "Giri", "Hari");
     }
 
     @GetMapping("/prices")
+    @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByPrice.class)
-    @PreAuthorize("hasRole('STUDENT') and hasAuthority('student:read')")
-    public List<Price> prices() {
+    public List<Price> pricesNew() {
+        System.out.println(getUserDetails());
         return Stream.of(100, 200, 400, 500, 600, 700)
-                .map(Price::new)
+                .map(price -> new Price(price, "Price" + price))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/users/profiles")
+    public Set<String> getUserDetails() {
+        return userService.getUserRoles("Girish");
     }
 }

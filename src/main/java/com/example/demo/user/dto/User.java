@@ -1,4 +1,4 @@
-package com.example.demo.user.service;
+package com.example.demo.user.dto;
 
 import com.example.demo.config.filter.FilterValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
