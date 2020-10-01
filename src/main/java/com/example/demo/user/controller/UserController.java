@@ -7,6 +7,7 @@ import com.example.demo.user.filter.FilterByPrice;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,7 @@ public class UserController {
     @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByPrice.class)
     public List<Price> pricesNew() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return Stream.of(100, 200, 400, 500, 600, 700)
                 .map(price -> new Price(price, "Price" + price))
                 .collect(Collectors.toList());
@@ -50,5 +52,6 @@ public class UserController {
     @GetMapping("/users/profiles")
     public Set<String> getUserDetails(@RequestParam(value = "refresh", defaultValue = "false") boolean refresh) {
         return userService.getUserRoles("Girish", refresh);
+
     }
 }

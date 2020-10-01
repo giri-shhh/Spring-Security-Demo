@@ -1,7 +1,5 @@
 package com.example.demo.config.security;
 
-import org.springframework.boot.web.servlet.filter.OrderedFilter;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,14 +23,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Order(OrderedFilter.HIGHEST_PRECEDENCE)
-public class SwitchUserFilter extends GenericFilterBean {
+public class CustomSwitchUserFilter extends GenericFilterBean {
 
     public static final String ROLE_PREVIOUS_ADMINISTRATOR = "ROLE_PREVIOUS_ADMINISTRATOR";
     public static final String IMPERSONATE_USER_ID = "Impersonate-User-Id";
     private final UserDetailsService userDetailsService;
 
-    public SwitchUserFilter(UserDetailsService userDetailsService) {
+    public CustomSwitchUserFilter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
