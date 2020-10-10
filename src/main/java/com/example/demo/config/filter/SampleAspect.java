@@ -23,7 +23,10 @@ public class SampleAspect {
     @Around("@annotation(filterResponse)")
     public Object hello(ProceedingJoinPoint joinPoint, FilterResponse filterResponse) throws Throwable {
         Object result = joinPoint.proceed();
-        if (!(result instanceof Collection)) return result;
+        if (!(result instanceof Collection))
+        {
+            throw new Exception("Filter cannot be applied");
+        }
 
         Class<? extends Predicate<?>> filter = filterResponse.filter();
         Predicate<? super FilterValue<?>> filterRule = (Predicate<? super FilterValue<?>>) applicationContext.getBean(filter);
