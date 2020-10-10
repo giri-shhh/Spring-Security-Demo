@@ -43,6 +43,8 @@ public class UserController {
     @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByPrice.class)
     public List<Price> pricesNew() {
+
+        List<String> list = List.of("");
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return Stream.of(100, 200, 400, 500, 600, 700)
                 .map(price -> new Price(price, "Price" + price))

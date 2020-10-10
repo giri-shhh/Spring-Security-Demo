@@ -69,8 +69,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         switchUserFilter.setExitUserUrl("/pwm/atom/user/exit-switch");
         switchUserFilter.setSwitchAuthorityRole("ADMIN");
         switchUserFilter.setUsernameParameter("Impersonate-User-Id");
-        switchUserFilter.setSuccessHandler((request, response, authentication) -> System.out.println("success"));
-        return  switchUserFilter;
+        switchUserFilter.setSuccessHandler((request, response, authentication) -> System.out.println("successfully impersonated"));
+        return switchUserFilter;
     }
-
 }
