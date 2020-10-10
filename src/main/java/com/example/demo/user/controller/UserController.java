@@ -35,16 +35,14 @@ public class UserController {
     @GetMapping("/users")
     @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByName.class)
-    public String users() {
-        return String.join("", "Giri", "Hari");
+    public List<String> users() {
+        return Stream.of("", "Girish", "Hari").collect(Collectors.toList());
     }
 
     @GetMapping("/prices")
     @PreAuthorize(STUDENT_READ)
     @FilterResponse(filter = FilterByPrice.class)
     public List<Price> pricesNew() {
-
-        List<String> list = List.of("");
         System.out.println(SecurityContextHolder.getContext().getAuthentication());
         return Stream.of(100, 200, 400, 500, 600, 700)
                 .map(price -> new Price(price, "Price" + price))
@@ -54,6 +52,5 @@ public class UserController {
     @GetMapping("/users/profiles")
     public Set<String> getUserDetails(@RequestParam(value = "refresh", defaultValue = "false") boolean refresh) {
         return userService.getUserRoles("Girish", refresh);
-
     }
 }
