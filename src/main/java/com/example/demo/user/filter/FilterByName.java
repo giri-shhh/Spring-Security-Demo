@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 import java.util.function.Predicate;
 
-@Component
+@Component()
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FilterByName implements Predicate<FilterValue<String>> {
 
